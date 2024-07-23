@@ -1,0 +1,17 @@
+from google.colab import drive
+drive.mount('/content/drive')
+import os
+import pandas as pd
+import signal
+base_path = '/content/drive/MyDrive/weatherdata'
+daily_path = os.path.join(base_path, 'daily/daily')
+daily_files = [os.path.join(daily_path, f) for f in os.listdir(daily_path) if f.endswith('.txt') and f != 'README.txt']
+print("Daily files:", daily_files)
+# Define timeout exception
+class TimeoutException(Exception):
+    pass
+
+def timeout_handler(signum, frame):
+    raise TimeoutException
+
+signal.signal(signal.SIGALRM, timeout_handler)
